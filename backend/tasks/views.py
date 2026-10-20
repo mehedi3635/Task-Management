@@ -4,5 +4,5 @@ from .serializers import TaskSerializer
 
 
 class TaskViewSet(viewsets.ModelViewSet):
- queryset = Task.objects.all() # what rows this endpoint sees
+ queryset = Task.objects.all()
  serializer_class = TaskSerializer 
