@@ -16,5 +16,9 @@ export async function crateApiTask(task){
 
         },
         body: JSON.stringify(task)
-    })
+    });
+    if (!response.ok){
+        throw new Error('Failed to create task');
+    }
+    return response.json();
 }
