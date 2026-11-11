@@ -5,7 +5,7 @@ function App() {
     <div className="container py-5">
      
       <TaskForm />
-    
+      <br />
       <TaskList />
 
      
