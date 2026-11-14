@@ -1,14 +1,23 @@
 import TaskForm from "./components/TaskForm";
-import TaskList from "./components/TaskList"; 
+import TaskList from "./components/TaskList";
 function App() {
   return (
     <div className="container py-5">
-     
-      <TaskForm />
-      <br />
-      <TaskList />
+      <main>
+        <section >
+          <header>
+            <div>
+              <h1>Task Manager</h1>
+            </div>
+          </header>
+          <TaskForm />
+          <br />
+          <TaskList />
+        </section>
+      </main>
 
-     
+
+
     </div>
   );
 }
