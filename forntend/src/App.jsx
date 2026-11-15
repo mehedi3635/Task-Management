@@ -1,6 +1,36 @@
+import { useEffect } from "react";
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
+import {getApiTasks, crateApiTask} from "./services/taskApi";
+
+
 function App() {
+
+  const [tasks, setTasks] = useState([]);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function fetchTasks() {
+      try {
+        const data = await getApiTasks();
+        setTasks(data);
+      } catch (error) {
+        setError("Failed to fetch tasks");
+      }
+    }
+
+    fetchTasks();
+  
+}, []);
+
+async function handleCreateTask(task) {
+  try {
+    const newTask = await crateApiTask(task);
+    setTasks((prevTasks) => [...prevTasks, newTask]);
+  } catch (error) {
+    setError(error);
+  }
+  
   return (
     <div className="container py-5">
       <main>
