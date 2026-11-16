@@ -1,8 +1,8 @@
-import { useEffect } from "react";
+
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
 import {getApiTasks, crateApiTask} from "./services/taskApi";
-
+import { useEffect, useState } from "react";
 
 function App() {
 
@@ -12,6 +12,7 @@ function App() {
   useEffect(() => {
     async function fetchTasks() {
       try {
+        setError("");
         const data = await getApiTasks();
         setTasks(data);
       } catch (error) {
@@ -25,12 +26,13 @@ function App() {
 
 async function handleCreateTask(task) {
   try {
+    setError("");
     const newTask = await crateApiTask(task);
     setTasks((prevTasks) => [...prevTasks, newTask]);
   } catch (error) {
     setError(error);
   }
-  
+}
   return (
     <div className="container py-5">
       <main>
@@ -40,7 +42,7 @@ async function handleCreateTask(task) {
               <h1>Task Manager</h1>
             </div>
           </header>
-          <TaskForm />
+          <TaskForm  oncreatetasks={handleCreateTask}/>
           <br />
           <TaskList />
         </section>

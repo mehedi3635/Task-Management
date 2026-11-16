@@ -3,12 +3,23 @@ import { useState } from "react"
 
 import { Plus } from "lucide-react";
 
-export default function TaskForm() {
+export default function TaskForm({oncreatetasks}) {
     const [title,setTitle] =useState()
     const [descrioption, setDescrioption] =useState()
 
     function handelSubmit(event){
         event.preventDefult();
+        if(!title.trim()){
+            return
+        }
+
+        oncreatetasks(
+            {
+                title:title.trim(),
+                description:descrioption.trim(),
+                is_completed:false,
+            }
+        )
     }
     return (
         <form onSubmit={handelSubmit}>
