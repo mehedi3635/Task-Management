@@ -1,38 +1,86 @@
-import { useState } from "react"
 
-
+import { useState } from "react";
 import { Plus } from "lucide-react";
 
-export default function TaskForm({oncreatetasks}) {
-    const [title,setTitle] =useState()
-    const [descrioption, setDescrioption] =useState()
+export default function TaskForm({ onCreateTasks }) {
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-    function handelSubmit(event){
-        event.preventDefult();
-        if(!title.trim()){
-            return
-        }
+  async function handleSubmit(event) {
+    event.preventDefault();
 
-        oncreatetasks(
-            {
-                title:title.trim(),
-                description:descrioption.trim(),
-                is_completed:false,
-            }
-        )
+    if (!title.trim()) return;
+
+    setSubmitting(true);
+
+    try {
+      const success = await onCreateTasks({
+        title: title.trim(),
+        description: description.trim(),
+        is_completed: false,
+      });
+
+      if (success) {
+        setTitle("");
+        setDescription("");
+      }
+    } finally {
+      setSubmitting(false);
     }
-    return (
-        <form onSubmit={handelSubmit}>
-            <div className="mb-3">
-                <label htmlFor="title" className="form-label">Title</label>
-                <input type="text" className="form-control" id="title" value={title} onChange={(e)=>setTitle(e.target.value)}/>
-            </div>
-            <div className="mb-3">
-                <label htmlFor="description" className="form-label">Description</label>
-                <textarea className="form-control" id="description" rows="3" value={descrioption} onChange={(e)=>setDescrioption(e.target.value)}></textarea>
-            </div>
-            <button type="submit" className="btn btn-primary"><Plus/> Add Task</button>
-        </form>
-    )
+  }
 
+  return (
+    <form onSubmit={handleSubmit}>
+      <div className="mb-3">
+        <label htmlFor="title" className="form-label fw-semibold">
+          Task Title
+        </label>
+
+        <input
+          type="text"
+          className="form-control form-control-lg custom-input"
+          id="title"
+          placeholder="Enter your task title..."
+          value={title}
+          onChange={(e) => setTitle(e.target.value)}
+          maxLength={200}
+          required
+        />
+      </div>
+
+      <div className="mb-4">
+        <label htmlFor="description" className="form-label fw-semibold">
+          Description
+        </label>
+
+        <textarea
+          className="form-control custom-input"
+          id="description"
+          rows="5"
+          placeholder="Write something about your task..."
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+        />
+      </div>
+
+      <button
+        type="submit"
+        className="btn btn-primary w-100 py-2 fw-semibold"
+        disabled={submitting || !title.trim()}
+      >
+        {submitting ? (
+          <>
+            <span className="spinner-border spinner-border-sm me-2" />
+            Adding Task...
+          </>
+        ) : (
+          <>
+            <Plus size={19} className="me-2" />
+            Add Task
+          </>
+        )}
+      </button>
+    </form>
+  );
 }
