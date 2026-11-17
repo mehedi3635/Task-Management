@@ -2,7 +2,7 @@
 import { ClipboardList } from "lucide-react";
 import TaskItem from "./TaskItem";
 
-export default function TaskList({ tasks }) {
+export default function TaskList({ tasks,ondelete }) {
   if (tasks.length === 0) {
     return (
       <div className="empty-state text-center py-5">
@@ -20,7 +20,7 @@ export default function TaskList({ tasks }) {
   return (
     <div className="d-flex flex-column gap-3">
       {tasks.map((task) => (
-        <TaskItem key={task.id} task={task} />
+        <TaskItem key={task.id} task={task} ondelete={ondelete} />
       ))}
     </div>
   );

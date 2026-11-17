@@ -4,7 +4,7 @@ import { ClipboardList, CheckCircle2, Clock3 } from "lucide-react";
 
 import TaskForm from "./components/TaskForm";
 import TaskList from "./components/TaskList";
-import { getApiTasks, createApiTask } from "./services/taskApi";
+import { getApiTasks, createApiTask, taskApiDelete } from "./services/taskApi";
 
 function App() {
   const [tasks, setTasks] = useState([]);
@@ -44,6 +44,20 @@ function App() {
     (task) => task.is_completed
   ).length;
   const pendingTasks = totalTasks - completedTasks;
+
+  async function handleDeleteTask(id) {
+    try {
+        setError("");
+
+        await taskApiDelete(id);
+
+        setTasks((prevTasks) =>
+            prevTasks.filter((task) => task.id !== id)
+        );
+    } catch (error) {
+        setError(error.message);
+    }
+}
 
   return (
     <div className="app-wrapper min-vh-100 py-4 py-md-5">
@@ -171,7 +185,7 @@ function App() {
                     </p>
                   </div>
                 ) : (
-                  <TaskList tasks={tasks} />
+                  <TaskList tasks={tasks} ondelete={handleDeleteTask} />
                 )}
               </div>
             </div>

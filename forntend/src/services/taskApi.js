@@ -26,3 +26,15 @@ export async function createApiTask(task) {
 
     return response.json();
 }
+
+export async function taskApiDelete(id) {
+    const response = await fetch(`${API_BASE_URL}/tasks/${id}/`, {
+        method: "DELETE",
+    });
+
+    if (!response.ok) {
+        throw new Error("Failed to delete task");
+    }
+
+    
+}
